@@ -104,8 +104,3 @@ module Azendoo
     end
   end
 end
-
-# Azendoo::API.new('EEiaXvNTUX1W5SVFkCs-bKXVEkx').on_message do |m|
-#   puts m.inspect
-# end
-# Azendoo::API.new('EEiaXvNTUX1W5SVFkCs-bKXVEkx').send_message('53188f8fd12b525412000017', '55f2db2464594a632e00001c', 'Yo dude')
