@@ -1,11 +1,14 @@
+require 'lita/adapters/azendoo/connector'
+require 'lita/adapters/azendoo/azendoo_client'
 module Lita
   module Adapters
     class Azendoo < Adapter
       config :api_key, type: String, required: true
+      attr_reader :connector
 
       def initialize(robot)
         super(robot)
-        @azendoo = Azendoo::API.new(config.api_key)
+        @connector = Connector.new(robot, config.api_key)
       end
 
       def run

@@ -3,9 +3,8 @@ require 'Net/HTTP'
 require 'json'
 require 'eventmachine'
 require 'em-synchrony'
-
-module Azendoo
-
+puts 'LOADED !'
+module AzendooClient
   class Push
     attr_reader :push_token
 
@@ -62,7 +61,7 @@ module Azendoo
     end
 
     def on_message
-      push = Azendoo::Push.new(push_token)
+      push = AzendooClient::Push.new(push_token)
       EM.synchrony do
         client  = Faye::Client.new('https://app.azendoo.com:4242/colossus/')
         client.add_extension(push)

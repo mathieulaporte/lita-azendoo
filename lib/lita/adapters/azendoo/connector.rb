@@ -1,26 +1,29 @@
 module Lita
   module Adapters
-    class Twitter < Adapter
+    class Azendoo < Adapter
       class Connector
-        def initialize(robot)
+        attr_reader :robot, :azendoo
+
+        def initialize(robot, api_key)
           @robot = robot
-          @azendoo = Azendoo::API.new(config.api_key)
+          @azendoo = ::AzendooClient::API.new(api_key)
         end
 
         def connect
           azendoo.on_message do |message|
-            user    = User.new(message['user']['id'], name: message['name'])
-            source  = Source.new(user: user, room: message['context'])
-            message = Message.new(robot, text, source)
+            user    = User.new(message['user']['id'], name: message['user']['name'])
+            source  = Source.new(user: user, room: "#{message['context']['workspace_id']}/#{message['context']['thread_id']}")
+            message = Message.new(robot, message['body'], source)
             robot.receive(message)
           end
         end
 
         def messages(target, strings)
+          workspace_id, thread_id = target.room.split('/')
           strings.each do |message|
             azendoo.send_message(
-              target['workspace_id'],
-              target['thread_id'],
+              workspace_id,
+              thread_id,
               message
             )
           end
